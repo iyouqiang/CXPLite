@@ -46,8 +46,17 @@ class FCMIneTabHeaderView: UIView {
         if(FCUserInfoManager.sharedInstance.isLogin && self.userData != nil) {
             self.accountLab?.text = self.userData?.userName
             self.uidLab?.text =  "UID: \(self.userData?.userId ?? "---")"
-            self.verifyBtn?.setImage(UIImage(named: "mine_verified"), for: .normal)
-            self.verifyBtn?.setTitle("已认证", for: .normal)
+            guard let state = Int(FCUserInfoManager.sharedInstance.userInfo?.state ?? "0") else { return  }
+            
+            if state > 0 {
+               
+                self.verifyBtn?.setImage(UIImage(named: "mine_verified"), for: .normal)
+                self.verifyBtn?.setTitle("已认证", for: .normal)
+            }else {
+                
+                self.verifyBtn?.setImage(UIImage(named: "mine_unverify"), for: .normal)
+                 self.verifyBtn?.setTitle("未认证", for: .normal)
+            }
         } else {
             self.accountLab?.text = "未登录/注册"
             self.uidLab?.text = "UID: ---"
